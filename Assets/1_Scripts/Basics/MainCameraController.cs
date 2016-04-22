@@ -16,6 +16,17 @@ public class MainCameraController : MonoBehaviour {
 
 	//Update this with data about screen size - variable. Detect screen?
 
+	void Awake(){
+		if (!player) {
+			GameObject[] temp = FindObjectsOfType<GameObject> ();
+			foreach (GameObject item in temp) {
+				if (item.CompareTag ("Player")) {
+					player = item;
+				}
+			}
+		}
+	}
+
 	void Start () {
 		if (player == null) {
 			Debug.Log ("Player Null");

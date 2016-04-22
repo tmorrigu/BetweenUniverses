@@ -35,6 +35,7 @@ public class SelectHazard : MonoBehaviour {
 
 	void Start(){
 		//The first number is the puzzle ID, the next is an array of hazard types
+		//	allowed in that category of puzzle, currently called with puzzleNum
 		hazardTypePerCat.Add(0, new int[]{0,2});
 		hazardTypePerCat.Add(1, new int[]{1,2});
 		hazardTypePerCat.Add(2, new int[]{2,2});
@@ -42,7 +43,9 @@ public class SelectHazard : MonoBehaviour {
 
 	public GameObject setUpHazard(int puzzleNum){
 		Debug.Log ("setUpHazard, puzzleNum: " + puzzleNum);
+		//Holds the allowed hazard types per puzzle
 		int[] categories;
+		//Holds instantiated hazard
 		GameObject tempHaz=null;
 		if (hazardTypePerCat.TryGetValue (puzzleNum, out categories)) {
 			if (categories [0] == categories [1]) {
@@ -61,7 +64,7 @@ public class SelectHazard : MonoBehaviour {
 	public GameObject instantiateHazard(int category){
 		Debug.Log ("Category: " + category);
 		if (category == 0) {
-			//Get Plant
+			//Get Plant, randomized to grab different plants at random
 			int random = rnd.Next (0, numPlantoid);
 			if (random == 0) {
 				temp = Instantiate (growthPlantoid, battlePos, battleRot) as GameObject;

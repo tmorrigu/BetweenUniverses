@@ -11,15 +11,28 @@ public class PlayerController : MonoBehaviour {
 	private float speed = 3;
 	private Rigidbody rb;
 	private bool inPuzzle = true;
+	[HideInInspector]
 	public Collider puzzleGate;
 	private bool testPuzzleComplete;
+	[HideInInspector]
 	public ArrowControls arrowcontrol;
+	public Canvas arrowPrefab;
 	public GameObject errorMessage;
+
+	void Awake(){
+		if (!arrowcontrol) {
+			Canvas temp = Instantiate(arrowPrefab) as Canvas;
+			arrowcontrol = temp.GetComponent<ArrowControls> ();
+		}
+		rb = GetComponent<Rigidbody> ();
+	}
 
 	void Start()
 	{
-		rb = GetComponent<Rigidbody> ();
-		GameManager.instance.enterPuzzle (0);
+		Scene temp = SceneManager.GetActiveScene ();
+		if(temp.name == "0_Start"){
+			GameManager.instance.enterPuzzle (0);
+		}
 		errorMessage.SetActive (false);
 	}
 
@@ -33,13 +46,13 @@ public class PlayerController : MonoBehaviour {
 		float h;
 		float v;
 
-		//if (mobile?????){
+		if (arrowcontrol){
 			h = arrowcontrol.ArrowInput.x;
 			v = arrowcontrol.ArrowInput.y;
-/*		} else {
+		} else {
 			h = Input.GetAxis ("Horizontal");
 			v = Input.GetAxis ("Vertical");
-		}  */
+		}  
 
 		move = (v*Vector3.forward) + (h*Vector3.right);
 		move.x *= speed;
@@ -51,34 +64,15 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.CompareTag ("PuzzleOne")) {
-			inPuzzle = true;
-			puzzleGate = other;
-			GameManager.instance.enterPuzzle (0);
+			StartPuzzle (0, other);
 		} else if (other.gameObject.CompareTag ("PuzzleTwo")) {
-			inPuzzle = true;
-			puzzleGate = other;
-			GameManager.instance.enterPuzzle (1);
+			StartPuzzle(1, other);
 		} else if (other.gameObject.CompareTag ("PuzzleThree")) {
-			inPuzzle = true;
-			puzzleGate = other;
-			GameManager.instance.enterPuzzle (2);
+			StartPuzzle(2, other);
 		} else if (other.gameObject.CompareTag ("TriggerExit")) {
-			inPuzzle = false;
-			GameManager.instance.exitPuzzle ();
+			ExitPuzzle ();
 		} else if (other.gameObject.CompareTag ("TriggerFinish")) {
-			testPuzzleComplete = PuzzleManagerScript.instance.checkExit ();
-			if (testPuzzleComplete) {
-				puzzleGate.isTrigger = true;
-			} else {
-				if (inPuzzle) {
-					//Need to test if this is the first time the player has moved into the puzzle,
-					//But this is updated in the enter trigger, not the exit trigger
-					//So it will always show false
-					//NEED TO FIX!!!
-					errorMessage.SetActive (true);
-				}
-				puzzleGate.isTrigger = false;
-			}
+			TestExitPuzzle ();
 		} else if (other.gameObject.CompareTag ("PuzzleTile")) {
 			PuzzleManagerScript.instance.changeMat (other);
 			other.gameObject.tag = "finishedTile";
@@ -93,12 +87,39 @@ public class PlayerController : MonoBehaviour {
 			}
 		}  else if (other.gameObject.CompareTag ("LevelTwo")) {
 			hint.enabled = false;
-			SceneManager.LoadScene ("1_LevelTwo");
 			gameObject.transform.position = new Vector3 (0f, 0f, 0f);
+			SceneManager.LoadScene ("1_LevelTwo");
 		} else if (other.gameObject.CompareTag ("win")) {
 			SceneManager.LoadScene ("Win_Screen");
 		} else if (other.gameObject.CompareTag ("lose")) {
 			SceneManager.LoadScene ("Lose_Screen");
+		}
+	}
+
+	private void StartPuzzle(int num, Collider other){
+		inPuzzle = true;
+		puzzleGate = other;
+		GameManager.instance.enterPuzzle (num);
+	}
+
+	private void ExitPuzzle(){
+		inPuzzle = false;
+		GameManager.instance.exitPuzzle ();
+	}
+
+	private void TestExitPuzzle(){
+		testPuzzleComplete = PuzzleManagerScript.instance.checkExit ();
+		if (testPuzzleComplete) {
+			puzzleGate.isTrigger = true;
+		} else {
+			if (inPuzzle) {
+				//Need to test if this is the first time the player has moved into the puzzle,
+				//But this is updated in the enter trigger, not the exit trigger
+				//So it will always show false
+				//NEED TO FIX!!!
+				errorMessage.SetActive (true);
+			}
+			puzzleGate.isTrigger = false;
 		}
 	}
 

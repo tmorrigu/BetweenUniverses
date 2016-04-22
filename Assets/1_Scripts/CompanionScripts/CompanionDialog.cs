@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class CompanionDialog : MonoBehaviour {
 
@@ -14,9 +15,15 @@ public class CompanionDialog : MonoBehaviour {
 
 	public Canvas dialogCanvas;
 
+	void Awake(){
+		cm = gameObject.GetComponent<CompanionMovement> ();
+		if (!companionText) {
+			companionText = dialogCanvas.GetComponentInChildren<Text> ();
+		}
+	}
+
 	void Start(){
 		dialogCanvas.enabled = false;
-		first = true;
 		options = dialogCanvas.GetComponentsInChildren<Button> ();
 		foreach (Button choice in options){
 			if (choice.CompareTag ("yes")) {
@@ -31,13 +38,23 @@ public class CompanionDialog : MonoBehaviour {
 
 	
 	public void startRunning (){
+		Scene temp = SceneManager.GetActiveScene ();
+		if (temp.name == "0_Start") {
+			first = true;
+		} else {
+			cm.startRunning ();
+		}
 		if (first) {
 			first = false;
 			dialogCanvas.enabled = true;
 			yes.gameObject.SetActive (false);
 			no.gameObject.SetActive (false);
-			ok.gameObject.SetActive (false);
-			companionDecide ();
+			if (ok) {
+				ok.gameObject.SetActive (false);
+				companionDecide ();
+			} else {
+				HangOut ();
+			}
 		}
 	}
 
@@ -47,15 +64,18 @@ public class CompanionDialog : MonoBehaviour {
 			companionText.text = "You are a jerk.";
 			ok.gameObject.SetActive (true);
 		} else {
-			companionText.text = "Want to hang out?";
-			yes.gameObject.SetActive (true);
-			no.gameObject.SetActive (true);
+			HangOut ();
 		}
+	}
+
+	private void HangOut(){
+		companionText.text = "Want to hang out?";
+		yes.gameObject.SetActive (true);
+		no.gameObject.SetActive (true);
 	}
 
 	public void optionYes(){
 		dialogCanvas.enabled = false;
-		cm = gameObject.GetComponent<CompanionMovement> ();
 		cm.startRunning ();
 	}
 

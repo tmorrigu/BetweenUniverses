@@ -4,7 +4,7 @@ using System.Collections;
 public class CompanionMovement : MonoBehaviour {
 
 	private GameObject player;
-	private bool follow;
+	private bool follow = false;
 	private CompanionDialog cd;
 
 //	private Rigidbody rb;
@@ -25,7 +25,6 @@ public class CompanionMovement : MonoBehaviour {
 
 
 	void Start(){
-		follow = false;
 //		rb = GetComponent<Rigidbody> ();
 	}
 

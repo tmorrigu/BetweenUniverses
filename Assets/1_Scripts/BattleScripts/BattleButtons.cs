@@ -80,7 +80,7 @@ public class BattleButtons : MonoBehaviour {
 	}
 	private void hazardOther(){
 		int choice = Random.Range (0, (numChoices - 1));
-		if (numChoices > 0) {
+		if (numChoices >= 0) {
 			string action = options [choice];
 			hazardUpdates.text = action;
 		} else {

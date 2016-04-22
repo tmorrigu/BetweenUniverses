@@ -13,8 +13,6 @@ public class ArrowControls : MonoBehaviour {
 	const float MULTIPLE = 0.01f; 
 	const float SPEED = 1.0f;
 	private bool held = false;
-	public GameObject leftControls;
-	public GameObject rightControls;
 
 	// Update is called once per frame
 	void FixedUpdate () {

@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(AudioSource))]
 public class GameManager : MonoBehaviour {
@@ -9,21 +10,43 @@ public class GameManager : MonoBehaviour {
 	public int test;
 
 	//Puzzle stuff
-	public int currentPuzzleId = 0;
-	public string[] puzzleIdArray = new string[] {"PuzzleTileOne","PuzzleTileTwo","PuzzleTileThree","Puzzle4","Puzzle5","Puzzle6"};
-	public string[] puzzlePauseArray = new string[] { "Pause1", "Pause2", "Pause3", "Pause4", "Pause5", "Pause6" };
-	public int[] numHazardsArray = new int[] {10,30,40,50,50,50};
+	public struct PuzzleInfo {
+		private string IDtag;
+		private string pauseTag;
+		private int numHaz;
+		public PuzzleInfo(string id, string pause, string hazCount){
+			IDtag = id;
+			pauseTag = pause;
+			numHaz = hazCount;
+		}
+		public string ID {
+			get { return IDtag; }
+			set { IDtag = value; }
+		}
+		public string Pause {
+			get { return pauseTag; }
+			set{ pauseTag = value; }
+		}
+		public int HazardCount{
+			get{ return numHaz; }
+			set{ numHaz = value; }
+		}
+	}
+	private List<PuzzleInfo> puzzleBackgroundData;
+	public int currentPuzzleId;
 	private GameObject[] tiles;
 	public Canvas hint;
 
+	//FIX THIS. Could be a lot cleaner with a slider
 	//Starting player health
 	private static float MAX_HEALTH = 100f;
 	public float playerHealth = MAX_HEALTH;
 	private float healthRatio;
 	public GameObject healthBar;
+
 	//To track choices in battle
-	public int numAttacks = 0;
-	public int numRun = 0;
+	public int numAttacks;
+	public int numRun;
 
 	//For setting up and breaking down battles
 	public AudioClip battleStart;
@@ -62,10 +85,41 @@ public class GameManager : MonoBehaviour {
 			Destroy (gameObject);
 	}
 
+	void Start(){
+		numAttacks = 0;
+		numRun = 0;
+		currentPuzzleId = 0;
+		initializePuzzleData ();
+	}
+
+	private void initializePuzzleData(){
+		//THIS COULD BE BETTER IN CONSISTENCY AND POSSIBLE REUSE OF TAGS
+		//Maybe "Puzzle"+ puzzleNumInLevel
+		//Get the number of hazards from a separate List, array, etc by puzzleID + puzzleNumInLevel
+		puzzleBackgroundData= new List<PuzzleInfo>();
+		PuzzleInfo temp = new PuzzleInfo ("PuzzleTileOne", "Pause1", 10);
+		puzzleBackgroundData.Add (temp);
+		temp = new PuzzleInfo ("PuzzleTileTwo", "Pause2", 30);
+		puzzleBackgroundData.Add (temp);
+		temp = new PuzzleInfo ("PuzzleTileThree", "Pause3", 40);
+		puzzleBackgroundData.Add (temp);
+		temp = new PuzzleInfo ("Puzzle4", "Pause4", 50);
+		puzzleBackgroundData.Add (temp);
+		temp = new PuzzleInfo ("Puzzle5", "Pause5", 50);
+		puzzleBackgroundData.Add (temp);
+		temp = new PuzzleInfo ("Puzzle6", "Pause6", 50);
+		puzzleBackgroundData.Add (temp);
+	}
+
 	//Freeze the player, set up battle, start battle
 	public void startBattle(){
 		player.GetComponent<PlayerController> ().enabled = false;
 		player.GetComponent<Footsteps> ().enabled = false;
+		if (!controlScript) {
+			PlayerController temp = player.GetComponent<PlayerController> ();
+			controlScript = temp.arrowcontrol;
+			controls = controlScript.gameObject;
+		}
 		controlScript.Release ();
 		controls.SetActive (false);
 		Instantiate (battleParticles, player.transform.position, Quaternion.identity);
@@ -149,15 +203,15 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public string getTag(int ID){
-		return puzzleIdArray [ID];
+		return puzzleBackgroundData [ID].ID;
 	}
 
 	public string getPauseTag(int ID){
-		return puzzlePauseArray [ID];
+		return puzzleBackgroundData [ID].Pause;
 	}
 
 	public int getNumHazards(int ID){
-		return numHazardsArray [ID];
+		return puzzleBackgroundData[ID].HazardCount;
 	}
 
 	public void enterPuzzle(int ID){
@@ -175,7 +229,7 @@ public class GameManager : MonoBehaviour {
 		player.GetComponent<TrackHazard> ().inPuzzle = false;
 		tiles = GameObject.FindGameObjectsWithTag ("PuzzleTile");
 		for (int i = 0; i < tiles.Length; i++) {
-			tiles [i].tag = puzzlePauseArray[currentPuzzleId];
+			tiles [i].tag = puzzleBackgroundData[currentPuzzleId].Pause;
 		}
 		hint.enabled = false;
 	}

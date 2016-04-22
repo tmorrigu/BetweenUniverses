@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Audio;
-
+using UnityEngine.SceneManagement;
 
 public class StartOptions : MonoBehaviour {
 
@@ -14,8 +14,13 @@ public class StartOptions : MonoBehaviour {
 	public Animator animColorFade; 					//Reference to animator which will fade to and from black when starting game.
 	public AnimationClip fadeColorAnimationClip;		//Animation clip fading to color (black default) when changing scenes
 
-	private float fastFadeIn = .01f;									//Very short fade time (10 milliseconds) to start playing music immediately without a click/glitch
+//	private float fastFadeIn = .01f;									//Very short fade time (10 milliseconds) to start playing music immediately without a click/glitch
 	private float slowFadeIn = .9f;
+	public bool showVid = true;
+
+	public void videoToggle(){
+		showVid = !showVid;
+	}
 
 	public void StartButtonClicked()
 	{
@@ -37,8 +42,16 @@ public class StartOptions : MonoBehaviour {
 
 	public void LoadDelayed()
 	{
+		if (showVid) {
+			SceneManager.LoadScene ("Start_Video");
+		} else if (!showVid) {
+			SceneManager.LoadScene ("0_Start");
+		} else {
+			Debug.Log ("showVid broken" + showVid);
+		}
 		//Load the selected scene, by scene index number in build settings
-		Application.LoadLevel (sceneToStart);
+	//	SceneManager.LoadScene(sceneToStart);
+//		Application.LoadLevel (sceneToStart);
 	}
 
 	public void PlayNewMusic()

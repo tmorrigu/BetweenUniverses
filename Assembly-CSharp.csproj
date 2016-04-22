@@ -53,6 +53,7 @@
      <Compile Include="Assets\1_Scripts\BattleScripts\BattleButtons.cs" />
      <Compile Include="Assets\1_Scripts\BattleScripts\BattleSounds.cs" />
      <Compile Include="Assets\1_Scripts\BattleScripts\OnClickExitBattle.cs" />
+     <Compile Include="Assets\1_Scripts\BuildPuzzle.cs" />
      <Compile Include="Assets\1_Scripts\CompanionScripts\CompanionDialog.cs" />
      <Compile Include="Assets\1_Scripts\CompanionScripts\CompanionMovement.cs" />
      <Compile Include="Assets\1_Scripts\ControllingCameraAspectScript.cs" />
@@ -86,11 +87,16 @@
      <Compile Include="Assets\1_Scripts\PuzzleScripts\EnterPuzzleOne.cs" />
      <Compile Include="Assets\1_Scripts\PuzzleScripts\SetHazardRandom.cs" />
      <Compile Include="Assets\1_Scripts\PuzzleScripts\TrackHazard.cs" />
+     <Compile Include="Assets\1_Scripts\TestPuzzleBuild.cs" />
+     <Compile Include="Assets\1_Scripts\VideoText.cs" />
      <Compile Include="Assets\9_External_Resources\Standard Assets\Scripts\MouseLook.cs" />
-     <None Include="Assets\8_Fonts\Fresco\readme (2).txt" />
-     <None Include="Assets\8_Fonts\MyType\readme.txt" />
-     <None Include="Assets\8_Fonts\Hacked\ReadMe.txt" />
-     <None Include="Assets\8_Fonts\Aaaargh\readme.txt" />
+     <Compile Include="Assets\CameraBehaviour.cs" />
+     <None Include="Assets\7_Fonts\Fresco\readme (2).txt" />
+     <None Include="Assets\7_Fonts\MyType\readme.txt" />
+     <None Include="Assets\7_Fonts\Hacked\ReadMe.txt" />
+     <None Include="Assets\PainlessProps\Bedroom\readme.txt" />
+     <None Include="Assets\7_Fonts\Aaaargh\readme.txt" />
+     <None Include="Assets\PainlessProps\Volume2\Indoor_Stuff\readme.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

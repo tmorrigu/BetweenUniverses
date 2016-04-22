@@ -13,16 +13,29 @@ public class StartMenu : MonoBehaviour {
 	public Button optionsButton;
 	public Button howToButton;
 	public Button exitButton;
+	public bool showVid;
 
 	// Use this for initialization
 	void Start () {
+		showVid = true;
 		howTo.enabled = false;
 		story.enabled = false;
 		optionsMenu.enabled = false;
 	}
 
+	public void videoToggle(){
+		showVid = !showVid;
+	}
+
 	public void NewPress(){
-		SceneManager.LoadScene ("0_Start");
+		showVid = true;
+		if (showVid) {
+			SceneManager.LoadScene ("Start_Video");
+		} else if (!showVid) {
+			SceneManager.LoadScene ("0_Start");
+		} else {
+			Debug.Log ("showVid broken" + showVid);
+		}
 	}
 
 	public void OptionsPress(){
