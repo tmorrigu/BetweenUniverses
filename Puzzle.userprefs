@@ -1,6 +1,25 @@
-﻿<Properties StartupItem="Assembly-CSharp.csproj">
+﻿<Properties StartupItem="Assembly-CSharp.csproj" GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench>
+    <Files>
+      <File FileName="Assets\1_Scripts\TestPuzzleBuild.cs" Line="1" Column="1" />
+      <File FileName="Assets\1_Scripts\BuildPuzzle.cs" Line="1" Column="1" />
+      <File FileName="Assets\1_Scripts\GameManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\1_Scripts\PuzzleManagerScript.cs" Line="18" Column="4" />
+      <File FileName="Assets\1_Scripts\Hazards\SelectHazard.cs" Line="1" Column="1" />
+      <File FileName="Assets\1_Scripts\Hazards\Hazard.cs" Line="67" Column="1" />
+      <File FileName="Assets\1_Scripts\PlayerController.cs" Line="3" Column="16" />
+    </Files>
+    <Pads>
+      <Pad Id="ClassPad">
+        <State name="__root__">
+          <Node name="Puzzle" expanded="True" selected="True">
+            <Node name="Assembly-CSharp" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
